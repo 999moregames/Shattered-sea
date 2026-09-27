@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Empires of the Shattered Sea</title>
+<style>
+:root{
+  --bg:#06131d; --panel:#0b1d2a; --panel2:#10293a; --line:#31536a;
+  --gold:#e8b65a; --text:#f3f0e6; --muted:#a9bac5; --green:#69c47b;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Georgia,"Times New Roman",serif;background:var(--bg);color:var(--text)}
+button{font:inherit;color:inherit;cursor:pointer}
+.top{
+  height:78px;background:linear-gradient(#101c25,#08131b);border-bottom:1px solid #3a4b55;
+  display:flex;align-items:center;padding:8px 18px;gap:22px;position:sticky;top:0;z-index:20
+}
+.logo{display:flex;align-items:center;gap:12px;min-width:330px}
+.compass{font-size:48px;color:var(--gold);filter:drop-shadow(0 0 7px #e8b65a55)}
+.logo b{font-size:25px;letter-spacing:2px;color:#f2d49a}
+.logo small{display:block;color:#9fb0ba;font-size:11px;letter-spacing:2px;text-align:center}
+.resources{display:flex;gap:24px;align-items:center;flex:1}
+.res{display:flex;align-items:center;gap:7px;white-space:nowrap}
+.res .ico{font-size:23px}.res b{font-size:17px}.res small{display:block;color:#69c47b;font-size:11px}
+.day{margin-left:auto;white-space:nowrap;text-align:center}.day b{font-size:16px}.day small{display:block;color:#c8b58a}
+.topbtn{background:#15242e;border:1px solid #53636d;border-radius:8px;padding:10px 13px;font-size:22px}
+.layout{display:grid;grid-template-columns:88px 1fr;min-height:calc(100vh - 78px)}
+.side{background:#091720;border-right:1px solid #294353;display:flex;flex-direction:column;align-items:center}
+.nav{width:100%;padding:13px 3px;text-align:center;border-bottom:1px solid #1d3544;color:#d6e0e4}
+.nav span{display:block;font-size:24px;margin-bottom:4px}.nav small{font-family:Arial,sans-serif;font-size:11px}
+.main{position:relative;overflow:hidden}
+.sea{
+  min-height:calc(100vh - 78px);position:relative;overflow:hidden;
+  background:
+   radial-gradient(circle at 15% 25%,#5f91a4 0 5%,transparent 15%),
+   radial-gradient(circle at 78% 18%,#8c9eac 0 3%,transparent 13%),
+   linear-gradient(150deg,#1a607e 0%,#0c4664 42%,#0a2940 100%);
+}
+.cloud{position:absolute;border-radius:50%;filter:blur(18px);opacity:.45;background:#dce7e8}
+.c1{width:390px;height:90px;left:5%;top:5%}.c2{width:420px;height:110px;right:18%;top:8%}
+.island{position:absolute;border-radius:48% 52% 45% 55%;border:5px solid #234e4d;box-shadow:0 20px 30px #00131f99, inset 0 -18px 20px #173b32}
+.island:before{content:"";position:absolute;inset:8%;border-radius:45%;background:linear-gradient(145deg,#91ad68,#547a52 65%,#365a48);box-shadow:inset 20px 20px 35px #c4d58a55}
+.island:after{content:"";position:absolute;width:30%;height:18%;right:5%;bottom:8%;border-radius:50%;background:#f1d7a0;transform:rotate(-12deg);opacity:.9}
+.asteria{width:54%;height:48%;left:18%;top:29%;transform:rotate(-4deg)}
+.frost{width:31%;height:28%;left:6%;top:11%;background:#91a7ae}.frost:before{background:linear-gradient(145deg,#e9f4ef,#a6c1c1)}
+.ember{width:29%;height:27%;right:10%;top:12%;transform:rotate(6deg)}.ember:before{background:linear-gradient(145deg,#756044,#42342e)}
+.verdant{width:29%;height:29%;right:3%;bottom:7%;transform:rotate(-8deg)}.verdant:before{background:linear-gradient(145deg,#75a45f,#315a45)}
+.reef{width:18%;height:17%;right:-1%;top:43%;background:#394e58}.reef:before{background:linear-gradient(145deg,#66716c,#303f46)}
+.mountain{position:absolute;background:#566b59;clip-path:polygon(50% 0,100% 100%,0 100%);width:90px;height:100px;filter:drop-shadow(5px 7px 5px #142b2a)}
+.mountain:after{content:"";position:absolute;left:34%;top:15%;border-left:12px solid transparent;border-right:12px solid transparent;border-bottom:30px solid #e8eee5}
+.town{position:absolute;left:34%;top:31%;width:34%;height:50%;z-index:3}
+.build{position:absolute;font-size:27px;filter:drop-shadow(2px 3px 3px #102015);text-shadow:0 2px 2px #001}
+.b1{left:43%;top:34%;font-size:46px}.b2{left:23%;top:53%;font-size:31px}.b3{left:61%;top:54%;font-size:30px}
+.b4{left:36%;top:68%;font-size:27px}.b5{left:12%;top:70%;font-size:25px}.b6{left:70%;top:30%;font-size:25px}
+.farm{position:absolute;left:4%;bottom:14%;font-size:34px}.forest{position:absolute;right:7%;bottom:13%;font-size:35px}
+.ship{position:absolute;font-size:40px;z-index:5;filter:drop-shadow(3px 5px 3px #001)}
+.s1{left:64%;top:69%;transform:rotate(-12deg)}.s2{left:76%;top:58%;transform:rotate(12deg)}.s3{left:51%;top:79%;font-size:31px}
+.label{position:absolute;z-index:8;background:#07131ddf;border:1px solid #a58b57;border-radius:8px;padding:8px 13px;box-shadow:0 7px 15px #0018}
+.label b{font-size:17px}.label small{display:block;color:#c5d0d4;font-family:Arial,sans-serif;font-size:11px;margin-top:2px}
+.la{left:46%;top:38%}.lf{left:12%;top:18%}.le{right:18%;top:21%}.lv{right:12%;bottom:19%}.lr{right:1%;top:48%}
+.quest{position:absolute;right:14px;top:14px;width:240px;background:#091722eF;border:1px solid #52616b;border-radius:8px;padding:13px;z-index:10;box-shadow:0 10px 25px #0018}
+.quest h3{margin:0 0 10px;color:#f0d18e;font-size:15px}.quest p{margin:8px 0;font-family:Arial,sans-serif;font-size:12px}.quest .ok{color:#73d483}.quest .no{color:#c7d0d4}
+.bottom{position:absolute;left:20px;right:20px;bottom:18px;z-index:10;display:grid;grid-template-columns:300px 1fr 280px;gap:12px}
+.card{background:#091a26ee;border:1px solid #456072;border-radius:9px;box-shadow:0 10px 25px #001c;padding:12px}
+.card h2{margin:0 0 5px;font-size:20px}.card p{font-family:Arial,sans-serif;color:#b9c7ce;font-size:12px;line-height:1.35;margin:5px 0}
+.enter{width:100%;background:#173c52;border:1px solid #b28a49;border-radius:7px;padding:10px;margin-top:7px}
+.tabs{display:flex;border-bottom:1px solid #3a596a}.tab{flex:1;padding:9px;text-align:center;font-family:Arial,sans-serif;font-size:12px}.tab.active{color:#f1cc81;border-bottom:2px solid #d7a64e}
+.tiles{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;padding-top:9px}
+.tile{background:#102c3e;border:1px solid #395d70;border-radius:6px;padding:7px;text-align:center;font-family:Arial,sans-serif}.tile .pic{font-size:27px}.tile b{display:block;font-size:11px;margin:3px 0}.tile small{display:block;color:#b9c6cc;font-size:9px}.tile button{margin-top:5px;width:100%;background:#142f40;border:1px solid #987a49;border-radius:5px;padding:5px;font-size:10px}
+.mini{height:170px;position:relative;overflow:hidden;background:#073247;border-radius:6px}
+.mini i{position:absolute;background:#557b56;border:1px solid #8aa56a;border-radius:50%;display:block}.mi1{width:110px;height:70px;left:45px;top:35px}.mi2{width:55px;height:45px;right:30px;top:20px}.mi3{width:70px;height:50px;right:50px;bottom:20px}.mi4{width:35px;height:25px;left:20px;bottom:18px}
+@media(max-width:900px){
+ .resources{gap:8px}.logo{min-width:250px}.res:nth-child(n+4),.day{display:none}
+ .bottom{grid-template-columns:1fr;position:relative;left:10px;right:auto;bottom:auto;padding:10px}.quest{display:none}
+ .sea{min-height:700px}.tiles{grid-template-columns:repeat(4,1fr)}
+}
+@media(max-width:600px){
+ .top{height:auto;flex-wrap:wrap}.logo{min-width:100%;justify-content:center}.resources{justify-content:center}.side{display:none}.layout{display:block}
+ .sea{min-height:650px}.asteria{width:65%;left:8%;height:40%}.label{font-size:10px}.la{left:35%}
+ .bottom{grid-template-columns:1fr}.tiles{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="logo"><div class="compass">✥</div><div><b>EMPIRES</b><small>OF THE SHATTERED SEA</small></div></div>
+  <div class="resources">
+    <div class="res"><span class="ico">🌾</span><div><b id="food">1,240</b><small>+120/h</small></div></div>
+    <div class="res"><span class="ico">🪵</span><div><b id="wood">860</b><small>+80/h</small></div></div>
+    <div class="res"><span class="ico">🪨</span><div><b id="stone">620</b><small>+60/h</small></div></div>
+    <div class="res"><span class="ico">💎</span><div><b>150</b><small>+12/h</small></div></div>
+    <div class="res"><span class="ico">👥</span><div><b>34 / 60</b><small>Population</small></div></div>
+  </div>
+  <div class="day">☀️ <b>Day 12</b><small>Spring, 1023</small></div>
+  <button class="topbtn">📖</button><button class="topbtn">⚙️</button><button class="topbtn">☰</button>
+</header>
+
+<div class="layout">
+<aside class="side">
+  <div class="nav">🌐<small>World</small></div><div class="nav">🏛️<small>Island</small></div>
+  <div class="nav">🔨<small>Buildings</small></div><div class="nav">⚔️<small>Army</small></div>
+  <div class="nav">⛵<small>Fleet</small></div><div class="nav">📖<small>Research</small></div>
+  <div class="nav">📜<small>Quests</small></div><div class="nav">✥<small>Map</small></div>
+</aside>
+
+<main class="main">
+<section class="sea">
+ <div class="cloud c1"></div><div class="cloud c2"></div>
+ <div class="island frost"></div><div class="island ember"></div><div class="island asteria"></div><div class="island verdant"></div><div class="island reef"></div>
+ <div class="mountain" style="left:27%;top:39%;transform:scale(1.3)"></div>
+ <div class="mountain" style="left:41%;top:35%;transform:scale(.85)"></div>
+ <div class="mountain" style="left:54%;top:42%;transform:scale(1.05)"></div>
+ <div class="mountain" style="left:13%;top:19%;transform:scale(.8)"></div>
+ <div class="mountain" style="right:22%;top:20%;transform:scale(1.15)"></div>
+ <div class="town"><div class="build b1">🏛️</div><div class="build b2">🏠</div><div class="build b3">🏠</div><div class="build b4">⛪</div><div class="build b5">🏘️</div><div class="build b6">🏰</div><div class="farm">🌾🌾</div><div class="forest">🌲🌲</div></div>
+ <div class="ship s1">⛵</div><div class="ship s2">⛵</div><div class="ship s3">🚤</div>
+ <div class="label la"><b>✦ Asteria</b><small>Your Capital</small></div>
+ <div class="label lf"><b>❄️ Frostholm</b><small>The Frozen North</small></div>
+ <div class="label le"><b>🔥 Ember Isles</b><small>Volcanic Territories</small></div>
+ <div class="label lv"><b>🌳 Verdant Reach</b><small>The Living Wilds</small></div>
+ <div class="label lr"><b>💀 Shadow Reefs</b><small>Dangerous Waters</small></div>
+ <div class="quest"><h3>⚔ Current Quest</h3><b>Expand Your Empire</b><p class="ok">✓ Build a Dock (1/1)</p><p class="no">□ Train 5 Soldiers (0/5)</p><p class="no">□ Explore 2 Islands (1/2)</p></div>
+
+ <div class="bottom">
+  <div class="card">
+   <h2>🏛️ Asteria</h2><b>Your Capital</b>
+   <p>A prosperous island blessed by the gods. Rich lands, safe shores, and a growing population.</p>
+   <p>👥 Population <b>34 / 60</b></p><p>😊 Happiness <b style="color:#69c47b">78%</b></p><p>🛡️ Defense Level <b>2</b></p>
+   <button class="enter" onclick="alert('Entering Asteria...')">Enter Island ›</button>
+  </div>
+  <div class="card">
+   <div class="tabs"><div class="tab active">Buildings</div><div class="tab">Units</div><div class="tab">Ships</div><div class="tab">Research</div></div>
+   <div class="tiles">
+    <div class="tile"><div class="pic">🌾</div><b>Farm</b><small>100 🪵 · 50 🪨</small><button onclick="build(100,'food')">Build</button></div>
+    <div class="tile"><div class="pic">🪵</div><b>Lumber Mill</b><small>120 🪵 · 40 🪨</small><button onclick="build(120,'wood')">Build</button></div>
+    <div class="tile"><div class="pic">⛏️</div><b>Quarry</b><small>120 🪵 · 40 🪨</small><button onclick="build(120,'stone')">Build</button></div>
+    <div class="tile"><div class="pic">🏠</div><b>House</b><small>80 🪵 · 40 🪨</small><button onclick="alert('House constructed!')">Build</button></div>
+    <div class="tile"><div class="pic">🏛️</div><b>Temple</b><small>200 🪨 · 150 💎</small><button onclick="alert('Temple constructed!')">Build</button></div>
+    <div class="tile"><div class="pic">⚓</div><b>Harbor</b><small>250 🪵 · 150 🪨</small><button onclick="alert('Harbor constructed!')">Build</button></div>
+    <div class="tile"><div class="pic">🏰</div><b>Wall</b><small>300 🪵 · 200 🪨</small><button onclick="alert('Wall constructed!')">Build</button></div>
+   </div>
+  </div>
+  <div class="card">
+   <div class="mini"><i class="mi1"></i><i class="mi2"></i><i class="mi3"></i><i class="mi4"></i></div>
+   <p style="margin:7px 0 0">🗺️ World Map · 5 regions discovered</p>
+  </div>
+ </div>
+</section>
+</main>
+</div>
+<script>
+let food=1240,wood=860,stone=620;
+function fmt(n){return n.toLocaleString()}
+function render(){document.getElementById('food').textContent=fmt(food);document.getElementById('wood').textContent=fmt(wood);document.getElementById('stone').textContent=fmt(stone)}
+function build(cost,type){
+  if(type==='food' && wood>=cost){wood-=cost;food+=20;alert('Farm built! Food production increased.')}
+  else if(type==='wood' && wood>=cost){wood-=cost;alert('Lumber mill built!')}
+  else if(type==='stone' && wood>=cost){wood-=cost;stone+=20;alert('Quarry built! Stone production increased.')}
+  else alert('Not enough wood.');
+  render();
+}
+setInterval(()=>{food+=2;wood+=1;stone+=1;render()},1000);
+</script>
+</body>
+</html>
